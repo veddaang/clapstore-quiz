@@ -1,0 +1,2128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>ClapStore — Discover Your Child's Play Profile</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --cs-primary: #FCBB13;
+      --cs-primary-dark: #e5a800;
+      --cs-primary-light: #fff9e6;
+      --cs-secondary: #1a1a1a;
+      --cs-secondary-light: #333333;
+      --cs-accent: #108474;
+      --cs-bg: #ffffff;
+      --cs-bg-alt: #f9fafb;
+      --cs-bg-warm: #fffdf5;
+      --cs-text: #1a1a2e;
+      --cs-text-secondary: #64748b;
+      --cs-border: #e2e8f0;
+      --cs-radius: 14px;
+      --cs-radius-lg: 20px;
+      --cs-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      --cs-shadow-hover: 0 8px 30px rgba(0,0,0,0.10);
+      --cs-font-heading: 'Poppins', sans-serif;
+      --cs-font-body: 'Open Sans', sans-serif;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    body { margin: 0; padding: 0; background: var(--cs-bg-warm); -webkit-font-smoothing: antialiased; text-wrap: pretty; }
+
+    /* --- Base --- */
+    .cs-quiz {
+      background: linear-gradient(180deg, #fffef8 0%, #fff8e1 40%, #fffdf5 100%);
+      padding: 20px 0 60px;
+      min-height: 100vh;
+      font-family: var(--cs-font-body);
+    }
+    .cs-quiz-wrap {
+      max-width: 540px;
+      margin: 0 auto;
+      padding: 0 16px;
+    }
+
+    /* --- Order Hook Screen (Step 0) --- */
+    .cs-quiz-hook {
+      text-align: center;
+      padding: 16px 0 0;
+    }
+    .cs-quiz-hook__order-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #ecfdf5;
+      border: 1.5px solid #86efac;
+      border-radius: 100px;
+      padding: 10px 20px;
+      font-family: var(--cs-font-heading);
+      font-size: 14px;
+      font-weight: 600;
+      color: #16a34a;
+      margin-bottom: 24px;
+      animation: csPulseGreen 2s ease-in-out infinite;
+    }
+    @keyframes csPulseGreen {
+      0%,100% { box-shadow: 0 0 0 0 rgba(34,197,94,0); }
+      50% { box-shadow: 0 0 0 8px rgba(34,197,94,0.1); }
+    }
+    .cs-quiz-hook h1 {
+      font-family: var(--cs-font-heading);
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--cs-text);
+      margin: 0 0 12px;
+      line-height: 1.2;
+      text-wrap: balance;
+    }
+    .cs-quiz-hook h1 span { color: var(--cs-primary); }
+    .cs-quiz-hook__sub {
+      font-size: 16px;
+      color: var(--cs-text-secondary);
+      margin: 0 0 28px;
+      line-height: 1.5;
+    }
+    .cs-quiz-hook__meta {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 28px;
+      flex-wrap: wrap;
+    }
+    .cs-quiz-hook__pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #fff;
+      border: 1.5px solid var(--cs-border);
+      border-radius: 100px;
+      padding: 8px 16px;
+      font-family: var(--cs-font-heading);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--cs-text);
+    }
+    .cs-quiz-start-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--cs-primary);
+      color: #000;
+      border: none;
+      border-radius: 100px;
+      padding: 18px 40px;
+      font-family: var(--cs-font-heading);
+      font-size: 17px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      box-shadow: 0 4px 20px rgba(252,187,19,0.35);
+      outline: none;
+      margin-bottom: 16px;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .cs-quiz-start-btn:hover {
+      background: var(--cs-primary-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 28px rgba(252,187,19,0.45);
+    }
+    .cs-quiz-hook__trust {
+      font-size: 13px;
+      color: var(--cs-text-secondary);
+      margin: 0 0 12px;
+      text-wrap: balance;
+    }
+    .cs-quiz-live {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #fff;
+      border: 1.5px solid #fee2e2;
+      border-radius: 100px;
+      padding: 8px 18px;
+      font-family: var(--cs-font-heading);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--cs-text);
+      animation: csPulseGlow 2s ease-in-out infinite;
+    }
+    .cs-quiz-live__dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: #ef4444;
+      animation: csPulseDot 1.5s ease-in-out infinite;
+    }
+    @keyframes csPulseDot {
+      0%,100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.75); }
+    }
+    @keyframes csPulseGlow {
+      0%,100% { box-shadow: 0 0 0 0 rgba(239,68,68,0); }
+      50% { box-shadow: 0 0 0 6px rgba(239,68,68,0.08); }
+    }
+
+    /* --- Progress Dots --- */
+    .cs-quiz-progress {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 28px;
+    }
+    .cs-quiz-progress__dot {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--cs-font-heading);
+      font-size: 14px;
+      font-weight: 700;
+      transition: all 0.3s ease;
+      border: 2.5px solid var(--cs-border);
+      background: #fff;
+      color: var(--cs-text-secondary);
+    }
+    .cs-quiz-progress__dot.done {
+      background: var(--cs-primary);
+      border-color: var(--cs-primary);
+      color: #fff;
+    }
+    .cs-quiz-progress__dot.active {
+      border-color: var(--cs-primary);
+      color: var(--cs-primary);
+      transform: scale(1.15);
+      box-shadow: 0 0 0 4px rgba(252,187,19,0.15);
+      animation: csDotPulse 2s ease-in-out infinite;
+    }
+    @keyframes csDotPulse {
+      0%,100% { box-shadow: 0 0 0 4px rgba(252,187,19,0.15); }
+      50% { box-shadow: 0 0 0 8px rgba(252,187,19,0.08); }
+    }
+    .cs-quiz-progress__line {
+      width: 24px;
+      height: 3px;
+      border-radius: 2px;
+      background: var(--cs-border);
+      transition: background 0.3s ease;
+    }
+    .cs-quiz-progress__line.done { background: var(--cs-primary); }
+
+    /* --- Steps --- */
+    .cs-quiz-step { display: none; opacity: 0; }
+    .cs-quiz-step.cs-quiz-step--active {
+      display: block;
+      animation: csQuizFadeIn 0.4s ease forwards;
+    }
+    @keyframes csQuizFadeIn {
+      from { opacity: 0; transform: translateY(14px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* --- Question Header --- */
+    .cs-quiz-step__question {
+      font-family: var(--cs-font-heading);
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--cs-text);
+      text-align: center;
+      margin: 0 0 8px;
+      line-height: 1.3;
+      text-wrap: balance;
+    }
+    .cs-quiz-step__hint {
+      font-size: 15px;
+      color: var(--cs-text-secondary);
+      text-align: center;
+      margin: 0 0 24px;
+      line-height: 1.4;
+      text-wrap: balance;
+    }
+
+    /* --- Card Grid --- */
+    .cs-quiz-grid { display: grid; gap: 12px; }
+    .cs-quiz-grid--3x2 { grid-template-columns: repeat(3, 1fr); }
+    .cs-quiz-grid--2x2 { grid-template-columns: repeat(2, 1fr); }
+    .cs-quiz-grid--list {
+      grid-template-columns: 1fr;
+      max-width: 460px;
+      margin: 0 auto;
+    }
+
+    /* --- Card --- */
+    .cs-quiz-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: #fff;
+      border: 2.5px solid transparent;
+      border-radius: var(--cs-radius);
+      padding: 20px 12px;
+      min-height: 64px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: center;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+      position: relative;
+      font-family: inherit;
+      font-size: inherit;
+      color: inherit;
+      width: 100%;
+      outline: none;
+      box-shadow: var(--cs-shadow);
+    }
+    .cs-quiz-card:hover {
+      border-color: rgba(252,187,19,0.4);
+      box-shadow: var(--cs-shadow-hover);
+      transform: translateY(-3px);
+    }
+    .cs-quiz-card:active { transform: scale(0.97); }
+    .cs-quiz-card__emoji-wrap {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 2px;
+      transition: transform 0.2s ease;
+    }
+    .cs-quiz-card:hover .cs-quiz-card__emoji-wrap { transform: scale(1.08); }
+    .cs-quiz-card__emoji { font-size: 30px; line-height: 1; }
+    .cs-quiz-card__label {
+      font-family: var(--cs-font-heading);
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--cs-text);
+      line-height: 1.3;
+      text-wrap: balance;
+    }
+    .cs-quiz-card__desc {
+      font-size: 13px;
+      color: var(--cs-text-secondary);
+      line-height: 1.3;
+    }
+    .cs-quiz-card::after {
+      content: '';
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--cs-primary);
+      opacity: 0;
+      transform: scale(0.5);
+      transition: all 0.2s ease;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: 14px;
+    }
+    .cs-quiz-card.cs-quiz-card--selected::after { opacity: 1; transform: scale(1); }
+    .cs-quiz-card.cs-quiz-card--selected {
+      border-color: var(--cs-primary);
+      background: var(--cs-primary-light);
+      animation: csQuizBounce 0.3s ease;
+    }
+    .cs-quiz-card.cs-quiz-card--disabled { opacity: 0.35; pointer-events: none; }
+    @keyframes csQuizBounce {
+      0% { transform: scale(1); }
+      40% { transform: scale(1.04); }
+      100% { transform: scale(1); }
+    }
+    .cs-quiz-grid--list .cs-quiz-card {
+      flex-direction: row;
+      justify-content: flex-start;
+      padding: 16px 20px;
+      gap: 14px;
+    }
+    .cs-quiz-grid--list .cs-quiz-card__emoji-wrap { width: 48px; height: 48px; margin-bottom: 0; flex-shrink: 0; }
+    .cs-quiz-grid--list .cs-quiz-card__emoji { font-size: 24px; }
+    .cs-quiz-grid--list .cs-quiz-card__text { text-align: left; }
+    .cs-quiz-grid--list .cs-quiz-card__label { font-size: 15px; margin-bottom: 2px; }
+
+    /* --- Name+Age Combined Step --- */
+    .cs-quiz-name-field {
+      max-width: 360px;
+      margin: 0 auto 24px;
+    }
+    .cs-quiz-name-field label {
+      display: block;
+      font-family: var(--cs-font-heading);
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--cs-text);
+      margin-bottom: 8px;
+      text-align: center;
+    }
+    .cs-quiz-name-field input {
+      width: 100%;
+      padding: 16px 20px;
+      border: 2.5px solid var(--cs-border);
+      border-radius: var(--cs-radius);
+      font-family: var(--cs-font-body);
+      font-size: 17px;
+      color: var(--cs-text);
+      background: #fff;
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      text-align: center;
+    }
+    .cs-quiz-name-field input::placeholder { color: #b0b8c4; }
+    .cs-quiz-name-field input:focus {
+      border-color: var(--cs-primary);
+      box-shadow: 0 0 0 4px rgba(252,187,19,0.1);
+    }
+    .cs-quiz-age-label {
+      font-family: var(--cs-font-heading);
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--cs-text);
+      text-align: center;
+      margin: 0 0 14px;
+    }
+
+    /* --- Multi-select counter --- */
+    .cs-quiz-counter {
+      text-align: center;
+      margin-top: 14px;
+      font-family: var(--cs-font-heading);
+      font-size: 14px;
+      color: var(--cs-text-secondary);
+      font-weight: 500;
+      min-height: 22px;
+    }
+    .cs-quiz-counter strong { color: var(--cs-primary); }
+
+    /* --- Next Button --- */
+    .cs-quiz-next {
+      display: block;
+      margin: 18px auto 0;
+      background: var(--cs-primary);
+      color: #000;
+      border: none;
+      border-radius: 100px;
+      padding: 16px 48px;
+      font-family: var(--cs-font-heading);
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      outline: none;
+      box-shadow: 0 4px 16px rgba(252,187,19,0.3);
+      -webkit-tap-highlight-color: transparent;
+    }
+    .cs-quiz-next:hover:not(:disabled) {
+      background: var(--cs-primary-dark);
+      transform: translateY(-2px);
+    }
+    .cs-quiz-next:disabled { opacity: 0.35; cursor: not-allowed; box-shadow: none; }
+
+    /* --- Loading Screen --- */
+    .cs-quiz-loading {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 300px;
+      text-align: center;
+      gap: 24px;
+    }
+    .cs-quiz-loading__icon {
+      font-size: 56px;
+      animation: csQuizSpin 2s ease-in-out infinite;
+    }
+    @keyframes csQuizSpin {
+      0% { transform: rotate(0deg) scale(1); }
+      25% { transform: rotate(10deg) scale(1.1); }
+      50% { transform: rotate(0deg) scale(1); }
+      75% { transform: rotate(-10deg) scale(1.1); }
+      100% { transform: rotate(0deg) scale(1); }
+    }
+    .cs-quiz-loading__bar {
+      width: 180px;
+      height: 8px;
+      background: var(--cs-border);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .cs-quiz-loading__bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--cs-primary), var(--cs-accent));
+      border-radius: 4px;
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+    .cs-quiz-loading__text {
+      font-family: var(--cs-font-heading);
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--cs-text);
+      margin: 0;
+    }
+    .cs-quiz-loading__sub {
+      font-size: 14px;
+      color: var(--cs-text-secondary);
+      margin: -12px 0 0;
+    }
+
+    /* --- Result Screen --- */
+    .cs-quiz-result { text-align: center; position: relative; }
+    .cs-quiz-confetti {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 50;
+      overflow: hidden;
+    }
+    .cs-quiz-confetti i {
+      position: absolute;
+      width: 10px; height: 10px;
+      border-radius: 2px;
+      top: -20px;
+      animation: csConfettiFall 3s ease-out forwards;
+    }
+    @keyframes csConfettiFall {
+      0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+    }
+
+    /* Order Validation Card */
+    .cs-quiz-order-match {
+      background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+      border: 2px solid #86efac;
+      border-radius: var(--cs-radius);
+      padding: 20px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    .cs-quiz-order-match__icon { font-size: 32px; display: block; margin-bottom: 8px; }
+    .cs-quiz-order-match__text {
+      font-family: var(--cs-font-heading);
+      font-size: 16px;
+      font-weight: 700;
+      color: #166534;
+      margin: 0;
+      line-height: 1.4;
+    }
+
+    /* Profile Card */
+    .cs-quiz-result__card {
+      background: #fff;
+      border-radius: var(--cs-radius-lg);
+      padding: 0;
+      box-shadow: 0 4px 40px rgba(0,0,0,0.08);
+      margin-bottom: 20px;
+      position: relative;
+      overflow: hidden;
+      border: 1.5px solid #f0f0f0;
+    }
+    .cs-quiz-result__card-accent {
+      height: 6px;
+      width: 100%;
+    }
+    .cs-quiz-result__card-inner {
+      padding: 28px 24px 24px;
+    }
+    .cs-quiz-result__child-name {
+      font-family: var(--cs-font-heading);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--cs-text-secondary);
+      margin: 0 0 10px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+    }
+    .cs-quiz-result__emoji { font-size: 56px; line-height: 1; display: block; margin-bottom: 14px; }
+    .cs-quiz-result__title {
+      font-family: var(--cs-font-heading);
+      font-size: 26px;
+      font-weight: 800;
+      color: #000;
+      margin: 0 0 12px;
+    }
+    .cs-quiz-result__desc {
+      font-size: 15px;
+      color: #444;
+      line-height: 1.8;
+      letter-spacing: 0.01em;
+      margin: 0 0 20px;
+      max-width: 420px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .cs-quiz-result__badges {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .cs-quiz-result__badge {
+      display: inline-block;
+      padding: 7px 16px;
+      border-radius: 100px;
+      font-size: 13px;
+      font-weight: 600;
+      font-family: var(--cs-font-heading);
+      border: 1.5px solid currentColor;
+    }
+
+    /* Rarity Badge */
+    .cs-quiz-rarity {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #FFF9E6;
+      border: 1.5px solid var(--cs-primary);
+      border-radius: 100px;
+      padding: 10px 20px;
+      font-family: var(--cs-font-heading);
+      font-size: 14px;
+      font-weight: 700;
+      color: #92400e;
+      margin: 16px 0 0;
+    }
+
+    /* Strength Bars */
+    .cs-quiz-strengths {
+      background: #fff;
+      border-radius: var(--cs-radius-lg);
+      padding: 24px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+      border: 1.5px solid #eee;
+    }
+    .cs-quiz-strengths h3 {
+      font-family: var(--cs-font-heading);
+      font-size: 16px;
+      font-weight: 700;
+      color: #000;
+      margin: 0 0 18px;
+      text-align: center;
+    }
+    .cs-quiz-strength-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .cs-quiz-strength-row:last-child { margin-bottom: 0; }
+    .cs-quiz-strength-label {
+      font-family: var(--cs-font-heading);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--cs-text);
+      width: 80px;
+      flex-shrink: 0;
+      text-align: right;
+    }
+    .cs-quiz-strength-track {
+      flex: 1;
+      height: 10px;
+      background: var(--cs-bg-alt);
+      border-radius: 5px;
+      overflow: hidden;
+    }
+    .cs-quiz-strength-fill {
+      height: 100%;
+      border-radius: 5px;
+      width: 0%;
+      transition: width 1.2s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    .cs-quiz-strength-pct {
+      font-family: var(--cs-font-heading);
+      font-size: 12px;
+      font-weight: 700;
+      width: 36px;
+      flex-shrink: 0;
+    }
+
+    /* Meaning Section */
+    .cs-quiz-result__meaning {
+      background: #fff;
+      border-radius: var(--cs-radius-lg);
+      padding: 24px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+      border: 1.5px solid #eee;
+      text-align: left;
+    }
+    .cs-quiz-result__meaning h3 {
+      font-family: var(--cs-font-heading);
+      font-size: 16px;
+      font-weight: 700;
+      color: #000;
+      margin: 0 0 16px;
+      text-align: center;
+    }
+    .cs-quiz-result__meaning ul {
+      list-style: none;
+      padding: 0; margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .cs-quiz-result__meaning li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 14px;
+      color: var(--cs-text);
+      line-height: 1.65;
+    }
+    .cs-quiz-result__meaning li span { flex-shrink: 0; font-size: 18px; }
+
+    /* Product Recommendations */
+    .cs-quiz-result__products {
+      background: #fff;
+      border-radius: var(--cs-radius-lg);
+      padding: 24px 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+      border: 1.5px solid #eee;
+      text-align: center;
+    }
+    .cs-quiz-result__products h3 {
+      font-family: var(--cs-font-heading);
+      font-size: 17px;
+      font-weight: 700;
+      color: #000;
+      margin: 0 0 4px;
+    }
+    .cs-quiz-result__products-sub {
+      font-size: 14px;
+      color: #777;
+      margin: 0 0 18px;
+    }
+    .cs-quiz-result__product-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+    .cs-quiz-product-card {
+      display: block;
+      text-decoration: none;
+      background: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1.5px solid #eee;
+      transition: all 0.25s ease;
+    }
+    .cs-quiz-product-card:hover { border-color: var(--cs-primary); transform: translateY(-3px); box-shadow: 0 6px 20px rgba(0,0,0,0.08); }
+    .cs-quiz-product-card img {
+      width: 100%; aspect-ratio: 1; object-fit: contain; display: block; background: #fafafa; padding: 8px;
+    }
+    .cs-quiz-product-card__body { padding: 10px 10px 12px; text-align: center; }
+    .cs-quiz-product-card__title {
+      font-family: var(--cs-font-heading);
+      font-size: 12px;
+      font-weight: 600;
+      color: #000;
+      margin: 0 0 6px;
+      line-height: 1.3;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .cs-quiz-product-card__price { font-size: 15px; font-weight: 800; color: #000; }
+    .cs-quiz-product-card__cta {
+      display: block;
+      text-align: center;
+      background: var(--cs-primary);
+      color: #000;
+      font-family: var(--cs-font-heading);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 10px;
+      transition: background 0.2s ease;
+    }
+    .cs-quiz-product-card:hover .cs-quiz-product-card__cta { background: var(--cs-primary-dark); }
+    .cs-quiz-product-match {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      font-family: var(--cs-font-heading);
+      font-size: 11px;
+      font-weight: 600;
+      color: #16a34a;
+      margin-top: 6px;
+    }
+    .cs-quiz-product-social { font-size: 11px; color: #999; margin-top: 2px; }
+
+    /* Discount / Urgency */
+    .cs-quiz-discount {
+      background: #fff;
+      border: 2.5px solid var(--cs-primary);
+      border-radius: var(--cs-radius);
+      padding: 24px 22px;
+      margin-bottom: 20px;
+      text-align: center;
+      box-shadow: 0 2px 16px rgba(252,187,19,0.12);
+    }
+    .cs-quiz-discount__label {
+      font-family: var(--cs-font-heading);
+      font-size: 13px;
+      font-weight: 700;
+      color: #000;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin: 0 0 8px;
+    }
+    .cs-quiz-discount__code {
+      font-family: var(--cs-font-heading);
+      font-size: 28px;
+      font-weight: 800;
+      color: #000;
+      letter-spacing: 3px;
+      margin: 0 0 6px;
+      background: var(--cs-primary);
+      display: inline-block;
+      padding: 8px 24px;
+      border-radius: 8px;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      transition: transform 0.15s ease;
+    }
+    .cs-quiz-discount__code:active { transform: scale(0.96); }
+    .cs-quiz-discount__copy-hint {
+      font-size: 12px;
+      color: #888;
+      margin: 4px 0 0;
+    }
+    .cs-quiz-discount__value {
+      font-size: 15px;
+      color: var(--cs-text);
+      margin: 8px 0 12px;
+      font-weight: 500;
+    }
+    .cs-quiz-discount__timer {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--cs-font-heading);
+      font-size: 14px;
+      font-weight: 600;
+      color: #dc2626;
+    }
+
+    /* Share Card — clean white card with profile-colored accents */
+    .cs-quiz-share-card {
+      background: #fff;
+      border-radius: var(--cs-radius-lg);
+      padding: 0;
+      margin-bottom: 20px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.06);
+      border: 1.5px solid #eee;
+    }
+    .cs-quiz-share-card__top {
+      padding: 30px 24px 22px;
+      background: #fff;
+    }
+    .cs-quiz-share-card__emoji { font-size: 48px; display: block; margin-bottom: 10px; }
+    .cs-quiz-share-card__name {
+      font-family: var(--cs-font-heading);
+      font-size: 12px;
+      font-weight: 600;
+      color: #aaa;
+      margin: 0 0 6px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+    }
+    .cs-quiz-share-card__title {
+      font-family: var(--cs-font-heading);
+      font-size: 24px;
+      font-weight: 800;
+      margin: 0 0 14px;
+      color: #000;
+    }
+    .cs-quiz-share-card__rarity {
+      display: inline-block;
+      background: var(--cs-primary);
+      border: none;
+      border-radius: 100px;
+      padding: 7px 18px;
+      font-family: var(--cs-font-heading);
+      font-size: 13px;
+      font-weight: 700;
+      color: #000;
+      margin-bottom: 16px;
+    }
+    .cs-quiz-share-card__badges {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 0;
+    }
+    .cs-quiz-share-card__badge {
+      background: #fff;
+      border: 1.5px solid #e0e0e0;
+      border-radius: 100px;
+      padding: 6px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      font-family: var(--cs-font-heading);
+      color: #333;
+    }
+    .cs-quiz-share-card__bottom {
+      background: #f7f7f7;
+      border-top: 1px solid #eee;
+      padding: 16px 24px;
+    }
+    .cs-quiz-share-card__cta { font-size: 13px; color: #888; margin: 0 0 4px; }
+    .cs-quiz-share-card__url {
+      font-family: var(--cs-font-heading);
+      font-size: 15px;
+      font-weight: 700;
+      color: #000;
+    }
+    .cs-quiz-share-card__brand {
+      margin-top: 10px;
+      font-size: 12px;
+      color: #bbb;
+    }
+
+    /* Share Buttons */
+    .cs-quiz-result__actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .cs-quiz-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 14px 18px;
+      border-radius: 12px;
+      font-family: var(--cs-font-heading);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: none;
+      text-decoration: none;
+      outline: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .cs-quiz-btn--whatsapp { background: #25D366; color: #fff; grid-column: 1 / -1; }
+    .cs-quiz-btn--whatsapp:hover { background: #1fb855; transform: translateY(-1px); }
+    .cs-quiz-btn--instagram { background: linear-gradient(135deg, #833AB4, #FD1D1D, #F77737); color: #fff; }
+    .cs-quiz-btn--instagram:hover { opacity: 0.9; transform: translateY(-1px); }
+    .cs-quiz-btn--copy { background: #fff; color: var(--cs-text); border: 1.5px solid #ddd; }
+    .cs-quiz-btn--copy:hover { border-color: var(--cs-primary); }
+    .cs-quiz-btn--retake { background: transparent; color: var(--cs-text-secondary); padding: 14px 16px; }
+    .cs-quiz-btn--retake:hover { color: var(--cs-primary); }
+
+    /* Challenge CTA — friendly, warm card */
+    .cs-quiz-challenge {
+      background: #fff;
+      border: 1.5px solid #eee;
+      border-radius: var(--cs-radius-lg);
+      padding: 24px 20px;
+      margin-bottom: 20px;
+      text-align: center;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+    }
+    .cs-quiz-challenge__text {
+      font-family: var(--cs-font-heading);
+      font-size: 16px;
+      font-weight: 700;
+      color: #000;
+      margin: 0 0 6px;
+    }
+    .cs-quiz-challenge__sub { font-size: 14px; color: #777; margin: 0 0 16px; }
+    .cs-quiz-challenge__btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--cs-primary);
+      color: #000;
+      border: none;
+      border-radius: 12px;
+      padding: 14px 28px;
+      font-family: var(--cs-font-heading);
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      -webkit-tap-highlight-color: transparent;
+      box-shadow: 0 2px 12px rgba(252,187,19,0.25);
+    }
+    .cs-quiz-challenge__btn:hover { background: var(--cs-primary-dark); transform: translateY(-1px); }
+
+    /* Community CTA — clean card, not dark gradient */
+    .cs-quiz-community {
+      background: #000;
+      border-radius: var(--cs-radius-lg);
+      padding: 28px 24px;
+      color: #fff;
+      text-align: center;
+    }
+    .cs-quiz-community p {
+      font-family: var(--cs-font-heading);
+      font-size: 17px;
+      font-weight: 700;
+      margin: 0 0 6px;
+    }
+    .cs-quiz-community .sub { font-size: 14px; color: #aaa; font-weight: 400; margin: 0 0 18px; }
+    .cs-quiz-community a {
+      display: inline-block;
+      background: var(--cs-primary);
+      color: #000;
+      padding: 14px 32px;
+      border-radius: 12px;
+      font-family: var(--cs-font-heading);
+      font-size: 15px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+    .cs-quiz-community a:hover { background: var(--cs-primary-dark); transform: translateY(-1px); }
+
+    /* Toast */
+    .cs-quiz-toast {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: var(--cs-secondary);
+      color: #fff;
+      font-family: var(--cs-font-heading);
+      font-size: 14px;
+      font-weight: 600;
+      padding: 12px 24px;
+      border-radius: 100px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+      z-index: 60;
+      opacity: 0;
+      transition: all 0.4s cubic-bezier(0.34,1.56,0.64,1);
+      white-space: nowrap;
+      pointer-events: none;
+    }
+    .cs-quiz-toast.cs-quiz-toast--show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    .cs-quiz-hidden { display: none !important; }
+
+    /* ============ RESPONSIVE ============ */
+    @media (max-width: 749px) {
+      .cs-quiz { padding: 0; margin: 0; }
+      .cs-quiz-wrap { padding: 0 18px; }
+
+      /* Every step = full screen */
+      .cs-quiz-step.cs-quiz-step--active {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        min-height: 100dvh;
+        padding: 24px 0 28px;
+      }
+      /* Step 0: spread content top to bottom */
+      .cs-quiz-step.cs-quiz-step--active[data-step="0"] .cs-quiz-hook {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        text-align: center;
+      }
+      /* Steps 1-4: question at top, cards fill middle, auto-spacing */
+      .cs-quiz-step.cs-quiz-step--active[data-step="1"],
+      .cs-quiz-step.cs-quiz-step--active[data-step="2"],
+      .cs-quiz-step.cs-quiz-step--active[data-step="3"],
+      .cs-quiz-step.cs-quiz-step--active[data-step="4"] {
+        justify-content: space-evenly;
+      }
+      /* Results page scrolls naturally */
+      .cs-quiz-step.cs-quiz-step--active[data-step="6"] {
+        min-height: auto;
+        padding: 0;
+      }
+      /* Loading screen */
+      .cs-quiz-step.cs-quiz-step--active[data-step="5"] {
+        justify-content: center;
+        align-items: center;
+      }
+
+      /* Step 0 — bigger, roomier */
+      .cs-quiz-hook__order-badge { padding: 10px 20px; font-size: 14px; margin-bottom: 0; }
+      .cs-quiz-hook h1 { font-size: 24px; margin-bottom: 0; line-height: 1.3; }
+      .cs-quiz-hook__sub { font-size: 15px; margin-bottom: 0; line-height: 1.5; }
+      .cs-quiz-hook__meta { gap: 8px; margin-bottom: 0; flex-wrap: nowrap; }
+      .cs-quiz-hook__pill { padding: 7px 11px; font-size: 12px; white-space: nowrap; }
+      .cs-quiz-start-btn { padding: 18px 44px; font-size: 17px; margin-bottom: 0; }
+      .cs-quiz-hook__trust { font-size: 12px; margin-bottom: 0; }
+
+      /* Quiz steps 1-4 — bigger cards, fill the screen */
+      .cs-quiz-step__question { font-size: 20px; margin-bottom: 8px; line-height: 1.3; }
+      .cs-quiz-step__hint { font-size: 14px; margin-bottom: 0; }
+      .cs-quiz-grid { gap: 12px; }
+      .cs-quiz-grid--3x2 { grid-template-columns: repeat(2, 1fr); }
+      .cs-quiz-grid--2x2 { grid-template-columns: repeat(2, 1fr); }
+      .cs-quiz-card { padding: 18px 12px; min-height: auto; }
+      .cs-quiz-card__emoji-wrap { width: 48px; height: 48px; margin-bottom: 4px; }
+      .cs-quiz-card__emoji { font-size: 26px; }
+      .cs-quiz-card__label { font-size: 14px; }
+      .cs-quiz-card__desc { font-size: 12px; }
+      .cs-quiz-grid--list .cs-quiz-card { padding: 16px 16px; gap: 12px; flex-direction: row; }
+      .cs-quiz-grid--list .cs-quiz-card__emoji-wrap { width: 42px; height: 42px; }
+      .cs-quiz-grid--list .cs-quiz-card__label { font-size: 15px; }
+      .cs-quiz-grid--list .cs-quiz-card__text { text-align: left; }
+      .cs-quiz-name-field { margin-bottom: 0; }
+      .cs-quiz-name-field input { padding: 14px 18px; font-size: 16px; }
+      .cs-quiz-age-label { font-size: 15px; margin-bottom: 10px; }
+      .cs-quiz-next { padding: 16px 44px; font-size: 16px; margin-top: 0; }
+      .cs-quiz-counter { margin-top: 12px; font-size: 14px; }
+      .cs-quiz-progress { margin-bottom: 0; }
+      .cs-quiz-progress__dot { width: 32px; height: 32px; font-size: 13px; }
+      .cs-quiz-progress__line { width: 18px; }
+
+      /* Results page */
+      .cs-quiz-result__card-inner { padding: 20px 16px 18px; }
+      .cs-quiz-result__emoji { font-size: 40px; }
+      .cs-quiz-result__title { font-size: 22px; }
+      .cs-quiz-result__desc { font-size: 14px; line-height: 1.6; }
+      .cs-quiz-result__product-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+      .cs-quiz-result__products { padding: 18px 14px; }
+      .cs-quiz-product-card img { padding: 6px; }
+      .cs-quiz-product-card__title { font-size: 12px; }
+      .cs-quiz-product-card__price { font-size: 14px; }
+      .cs-quiz-product-card__cta { font-size: 12px; padding: 10px 6px; }
+      .cs-quiz-result__actions { grid-template-columns: 1fr 1fr; gap: 10px; }
+      .cs-quiz-btn { width: 100%; font-size: 13px; padding: 12px 14px; }
+      .cs-quiz-btn--whatsapp { grid-column: 1 / -1; }
+      .cs-quiz-discount { padding: 18px 14px; }
+      .cs-quiz-discount__code { font-size: 20px; letter-spacing: 2px; padding: 6px 16px; }
+      .cs-quiz-discount__value { font-size: 13px; }
+      .cs-quiz-share-card__top { padding: 20px 16px 16px; }
+      .cs-quiz-share-card__title { font-size: 19px; }
+      .cs-quiz-share-card__bottom { padding: 12px 16px; }
+      .cs-quiz-strengths { padding: 18px 14px; }
+      .cs-quiz-result__meaning { padding: 18px 14px; }
+      .cs-quiz-result__meaning li { font-size: 13px; }
+      .cs-quiz-challenge { padding: 18px 14px; }
+      .cs-quiz-community { padding: 20px 16px; }
+    }
+
+    /* Extra small phones */
+    @media (max-width: 374px) {
+      .cs-quiz-hook h1 { font-size: 20px; }
+      .cs-quiz-hook__sub { font-size: 14px; }
+      .cs-quiz-hook__meta { flex-direction: column; align-items: center; gap: 6px; }
+      .cs-quiz-step__question { font-size: 18px; }
+      .cs-quiz-card { padding: 14px 8px; }
+      .cs-quiz-card__emoji-wrap { width: 40px; height: 40px; }
+      .cs-quiz-card__emoji { font-size: 22px; }
+      .cs-quiz-card__label { font-size: 13px; }
+      .cs-quiz-result__title { font-size: 20px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .cs-quiz-step.cs-quiz-step--active { animation: none; opacity: 1; }
+      .cs-quiz-card.cs-quiz-card--selected { animation: none; }
+      .cs-quiz-card:hover { transform: none; }
+      .cs-quiz-loading__icon { animation: none; }
+      .cs-quiz-confetti i { animation: none; display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<section class="cs-quiz" id="cs-play-quiz" role="region" aria-label="Play Profile Quiz">
+  <div class="cs-quiz-wrap">
+
+    <!-- ===== STEP 0: Order Hook ===== -->
+    <div class="cs-quiz-step cs-quiz-step--active" data-step="0">
+      <div class="cs-quiz-hook">
+        <div class="cs-quiz-hook__order-badge">
+          <span>&#x2705;</span>
+          <span data-order-badge-text>Order Confirmed!</span>
+        </div>
+        <h1 data-hook-title>While we pack your order... find out your child's <span>Play Type</span></h1>
+        <p class="cs-quiz-hook__sub">4 quick questions. Takes less than a minute. You'll love this.</p>
+        <div class="cs-quiz-hook__meta">
+          <span class="cs-quiz-hook__pill"><span>&#x23F1;&#xFE0F;</span> 40 seconds</span>
+          <span class="cs-quiz-hook__pill"><span>&#x2705;</span> 4 questions</span>
+          <span class="cs-quiz-hook__pill"><span>&#x1F381;</span> Free profile</span>
+        </div>
+        <button class="cs-quiz-start-btn" data-quiz-start>Let's Go &#x2192;</button>
+        <p class="cs-quiz-hook__trust">53,600+ parents have done this <span style="margin:0 8px;color:#ccc">|</span> <strong>&#x1F988; As seen on Shark Tank India</strong></p>
+      </div>
+    </div>
+
+    <!-- Progress Dots (visible steps 1-4) -->
+    <div class="cs-quiz-progress cs-quiz-hidden" data-quiz-progress>
+      <span class="cs-quiz-progress__dot active" data-dot="1">1</span>
+      <span class="cs-quiz-progress__line" data-line="1"></span>
+      <span class="cs-quiz-progress__dot" data-dot="2">2</span>
+      <span class="cs-quiz-progress__line" data-line="2"></span>
+      <span class="cs-quiz-progress__dot" data-dot="3">3</span>
+      <span class="cs-quiz-progress__line" data-line="3"></span>
+      <span class="cs-quiz-progress__dot" data-dot="4">4</span>
+    </div>
+
+    <!-- ===== STEP 1: Child Name + Age (Merged) ===== -->
+    <div class="cs-quiz-step" data-step="1" role="group" aria-labelledby="cs-q1-title">
+      <h2 class="cs-quiz-step__question" id="cs-q1-title">First, tell us about your little one &#x1F476;</h2>
+      <p class="cs-quiz-step__hint">We'll use this to make the results just for them</p>
+      <div class="cs-quiz-name-field">
+        <label for="cs-child-name">Child's first name <span style="color:#EF4444">*</span></label>
+        <input type="text" id="cs-child-name" placeholder="e.g. Aarav, Anaya, Vihaan..." autocomplete="off" data-child-name-input required>
+        <p class="cs-quiz-name-error" data-name-error style="display:none;color:#EF4444;font-size:13px;margin:6px 0 0;font-weight:500;">Please enter your child's name to continue</p>
+      </div>
+      <p class="cs-quiz-age-label">How old are they?</p>
+      <div class="cs-quiz-grid cs-quiz-grid--3x2" data-question="age" data-select="single" role="radiogroup">
+        <button class="cs-quiz-card" data-value="0-6m" role="radio" aria-checked="false" tabindex="0">
+          <div class="cs-quiz-card__emoji-wrap" style="background:#E0F2FE"><span class="cs-quiz-card__emoji">&#x1F476;</span></div>
+          <span class="cs-quiz-card__label">0–6 months</span>
+        </button>
+        <button class="cs-quiz-card" data-value="6-12m" role="radio" aria-checked="false" tabindex="-1">
+          <div class="cs-quiz-card__emoji-wrap" style="background:#FCE7F3"><span class="cs-quiz-card__emoji">&#x1F37C;</span></div>
+          <span class="cs-quiz-card__label">6–12 months</span>
+        </button>
+        <button class="cs-quiz-card" data-value="1-2y" role="radio" aria-checked="false" tabindex="-1">
+          <div class="cs-quiz-card__emoji-wrap" style="background:#FEF3C7"><span class="cs-quiz-card__emoji">&#x1F9F8;</span></div>
+          <span class="cs-quiz-card__label">1–2 years</span>
+        </button>
+        <button class="cs-quiz-card" data-value="2-3y" role="radio" aria-checked="false" tabindex="-1">
+          <div class="cs-quiz-card__emoji-wrap" style="background:#EDE9FE"><span class="cs-quiz-card__emoji">&#x1F3A8;</span></div>
+          <span class="cs-quiz-card__label">2–3 years</span>
+        </button>
+        <button class="cs-quiz-card" data-value="3-5y" role="radio" aria-checked="false" tabindex="-1">
+          <div class="cs-quiz-card__emoji-wrap" style="background:#ECFDF5"><span class="cs-quiz-card__emoji">&#x1F680;</span></div>
+          <span class="cs-quiz-card__label">3–5 years</span>
+        </button>
+        <button class="cs-quiz-card" data-value="5plus" role="radio" aria-checked="false" tabindex="-1">
+          <div class="cs-quiz-card__emoji-wrap" style="background:#FFF5F0"><span class="cs-quiz-card__emoji">&#x1F31F;</span></div>
+          <span class="cs-quiz-card__label">5+ years</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- ===== STEP 2: Interests ===== -->
+    <div class="cs-quiz-step" data-step="2" role="group" aria-labelledby="cs-q2-title">
+      <h2 class="cs-quiz-step__question" id="cs-q2-title">What does <span data-child-name-display>your child</span> enjoy the most? &#x1F3AF;</h2>
+      <p class="cs-quiz-step__hint">Pick 2 that they keep going back to</p>
+      <div class="cs-quiz-grid cs-quiz-grid--3x2" data-question="interests" data-select="multi" data-max="2" role="group">
+        <button class="cs-quiz-card" data-value="music" role="checkbox" aria-checked="false" tabindex="0">
+          <div class="cs-quiz-card__emoji-wrap" style="background:#FEF3C7"><span class="cs-quiz-card__emoji">&#x1F3B5;</span></div>
+          <span class="cs-quiz-card__label">Music & Sounds</span>
+        </button>
+        <button class="cs-quiz-card" data-value="building" role="checkbox" aria-checked="false" tabindex="0">
+          <div class="cs-quiz-card__emoji-wrap" style="background:#FFEDD5"><span class="cs-quiz-card__emoji">&#x1F9F1;</span></div>
+          <span class="cs-quiz-card__label">Building & Stacking</span>
+        </button>
+        <button class="cs-quiz-card" data-value="animals" role="checkbox" aria-checked="false" tabindex="0">
+          <div class="cs-quiz-card__emoji-wrap" style="background:#ECFDF5"><span class="cs-quiz-card__emoji">&#x1F43E;</span></div>
+          <span class="cs-quiz-card__label">Animals & Nature</span>
+        </button>
+        <button class="cs-quiz-card" data-value="colors" role="checkbox" aria-checked="false" tabindex="0">
+          <div class="cs-quiz-card__emoji-wrap" style="background:#EDE9FE"><span class="cs-quiz-card__emoji">&#x1F3A8;</span></div>
+          <span class="cs-quiz-card__label">Colors & Art</span>
+        </button>
+        <button class="cs-quiz-card" data-value="running" role="checkbox" aria-checked="false" tabindex="0">
+          <div class="cs-quiz-card__emoji-wrap" style="background:#FEF2F2"><span class="cs-quiz-card__emoji">&#x1F3C3;</span></div>
+          <span class="cs-quiz-card__label">Running & Jumping</span>
+        </button>
+        <button class="cs-quiz-card" data-value="puzzles" role="checkbox" aria-checked="false" tabindex="0">
+          <div class="cs-quiz-card__emoji-wrap" style="background:#E0F2FE"><span class="cs-quiz-card__emoji">&#x1F9E9;</span></div>
+          <span class="cs-quiz-card__label">Puzzles & Patterns</span>
+        </button>
+      </div>
+      <div class="cs-quiz-counter" data-quiz-counter>Pick your top 2</div>
+    </div>
+
+    <!-- ===== STEP 3: Scenario ===== -->
+    <div class="cs-quiz-step" data-step="3" role="group" aria-labelledby="cs-q3-title">
+      <h2 class="cs-quiz-step__question" id="cs-q3-title">A big cardboard box shows up &#x1F4E6; What does <span data-child-name-display>your child</span> do first?</h2>
+      <p class="cs-quiz-step__hint">Go with your gut, no wrong answers here</p>
+      <div class="cs-quiz-grid cs-quiz-grid--2x2" data-question="scenario" data-select="single" role="radiogroup">
+        <button class="cs-quiz-card" data-value="spaceship" role="radio" aria-checked="false" tabindex="0">
+          <div class="cs-quiz-card__emoji-wrap" style="background:#EDE9FE"><span class="cs-quiz-card__emoji">&#x1F680;</span></div>
+          <span class="cs-quiz-card__label">Climbs in, it's a spaceship!</span>
+        </button>
+        <button class="cs-quiz-card" data-value="apart" role="radio" aria-checked="false" tabindex="-1">
+          <div class="cs-quiz-card__emoji-wrap" style="background:#E0F2FE"><span class="cs-quiz-card__emoji">&#x1F527;</span></div>
+          <span class="cs-quiz-card__label">Flips it over & takes it apart</span>
+        </button>
+        <button class="cs-quiz-card" data-value="draw" role="radio" aria-checked="false" tabindex="-1">
+          <div class="cs-quiz-card__emoji-wrap" style="background:#FEF3C7"><span class="cs-quiz-card__emoji">&#x1F58D;&#xFE0F;</span></div>
+          <span class="cs-quiz-card__label">Grabs crayons & covers it in art</span>
+        </button>
+        <button class="cs-quiz-card" data-value="jump" role="radio" aria-checked="false" tabindex="-1">
+          <div class="cs-quiz-card__emoji-wrap" style="background:#FEF2F2"><span class="cs-quiz-card__emoji">&#x1F938;</span></div>
+          <span class="cs-quiz-card__label">Jumps in and out, over and over</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- ===== STEP 4: Superpower ===== -->
+    <div class="cs-quiz-step" data-step="4" role="group" aria-labelledby="cs-q4-title">
+      <h2 class="cs-quiz-step__question" id="cs-q4-title">Last one! If <span data-child-name-display>your child</span> could have any superpower...</h2>
+      <p class="cs-quiz-step__hint">Which one would they pick?</p>
+      <div class="cs-quiz-grid cs-quiz-grid--list" data-question="superpower" data-select="single" role="radiogroup">
+        <button class="cs-quiz-card" data-value="xray" role="radio" aria-checked="false" tabindex="0">
+          <div class="cs-quiz-card__emoji-wrap" style="background:#ECFDF5"><span class="cs-quiz-card__emoji">&#x1F441;&#xFE0F;</span></div>
+          <div class="cs-quiz-card__text">
+            <span class="cs-quiz-card__label">X-Ray Vision</span>
+            <span class="cs-quiz-card__desc">See what's inside everything</span>
+          </div>
+        </button>
+        <button class="cs-quiz-card" data-value="strength" role="radio" aria-checked="false" tabindex="-1">
+          <div class="cs-quiz-card__emoji-wrap" style="background:#FFEDD5"><span class="cs-quiz-card__emoji">&#x1F4AA;</span></div>
+          <div class="cs-quiz-card__text">
+            <span class="cs-quiz-card__label">Super Strength</span>
+            <span class="cs-quiz-card__desc">Pick up anything, build anything</span>
+          </div>
+        </button>
+        <button class="cs-quiz-card" data-value="shapeshift" role="radio" aria-checked="false" tabindex="-1">
+          <div class="cs-quiz-card__emoji-wrap" style="background:#EDE9FE"><span class="cs-quiz-card__emoji">&#x1F98E;</span></div>
+          <div class="cs-quiz-card__text">
+            <span class="cs-quiz-card__label">Shapeshifting</span>
+            <span class="cs-quiz-card__desc">Turn into any animal or person</span>
+          </div>
+        </button>
+        <button class="cs-quiz-card" data-value="freeze" role="radio" aria-checked="false" tabindex="-1">
+          <div class="cs-quiz-card__emoji-wrap" style="background:#E0F2FE"><span class="cs-quiz-card__emoji">&#x23F8;&#xFE0F;</span></div>
+          <div class="cs-quiz-card__text">
+            <span class="cs-quiz-card__label">Time Freeze</span>
+            <span class="cs-quiz-card__desc">Pause everything and look real close</span>
+          </div>
+        </button>
+        <button class="cs-quiz-card" data-value="speed" role="radio" aria-checked="false" tabindex="-1">
+          <div class="cs-quiz-card__emoji-wrap" style="background:#FEF2F2"><span class="cs-quiz-card__emoji">&#x26A1;</span></div>
+          <div class="cs-quiz-card__text">
+            <span class="cs-quiz-card__label">Super Speed</span>
+            <span class="cs-quiz-card__desc">Run faster than everyone!</span>
+          </div>
+        </button>
+      </div>
+    </div>
+
+    <!-- ===== STEP 5: Loading ===== -->
+    <div class="cs-quiz-step" data-step="5">
+      <div class="cs-quiz-loading" role="status" aria-live="polite">
+        <div class="cs-quiz-loading__icon" data-quiz-loading-icon>&#x1F9E9;</div>
+        <div class="cs-quiz-loading__bar"><div class="cs-quiz-loading__bar-fill" data-quiz-loading-bar></div></div>
+        <p class="cs-quiz-loading__text" data-quiz-loading-text>Figuring out the result...</p>
+        <p class="cs-quiz-loading__sub">Almost done!</p>
+      </div>
+    </div>
+
+    <!-- ===== STEP 6: Results ===== -->
+    <div class="cs-quiz-step" data-step="6">
+      <div class="cs-quiz-confetti" data-quiz-confetti></div>
+      <div class="cs-quiz-result" data-quiz-result>
+
+        <!-- Order Validation Card -->
+        <div class="cs-quiz-order-match cs-quiz-hidden" data-order-match>
+          <span class="cs-quiz-order-match__icon">&#x1F389;</span>
+          <p class="cs-quiz-order-match__text" data-order-match-text></p>
+        </div>
+
+        <!-- Profile Card -->
+        <div class="cs-quiz-result__card">
+          <div class="cs-quiz-result__card-accent" data-result-accent></div>
+          <div class="cs-quiz-result__card-inner">
+            <p class="cs-quiz-result__child-name" data-result-child-name></p>
+            <span class="cs-quiz-result__emoji" data-result-emoji></span>
+            <h2 class="cs-quiz-result__title" data-result-title></h2>
+            <p class="cs-quiz-result__desc" data-result-desc></p>
+            <div class="cs-quiz-result__badges" data-result-badges></div>
+            <div class="cs-quiz-rarity" data-result-rarity>&#x1F3C6; Only <strong data-result-rarity-pct></strong> of kids get this result!</div>
+          </div>
+        </div>
+
+        <!-- Shareable Screenshot Card -->
+        <div class="cs-quiz-share-card" data-result-share-card>
+          <div class="cs-quiz-share-card__top">
+            <span class="cs-quiz-share-card__emoji" data-share-card-emoji></span>
+            <p class="cs-quiz-share-card__name" data-share-card-name></p>
+            <p class="cs-quiz-share-card__title" data-share-card-title></p>
+            <div class="cs-quiz-share-card__rarity" data-share-card-rarity></div>
+            <div class="cs-quiz-share-card__badges" data-share-card-badges></div>
+          </div>
+          <div class="cs-quiz-share-card__bottom">
+            <p class="cs-quiz-share-card__cta">Find your child's play type &#x1F447;</p>
+            <p class="cs-quiz-share-card__url">clapstore.in/quiz</p>
+            <p class="cs-quiz-share-card__brand">&#x1F9F8; ClapStore &bull; As seen on Shark Tank India</p>
+          </div>
+        </div>
+
+        <!-- Share Actions -->
+        <div class="cs-quiz-result__actions">
+          <button class="cs-quiz-btn cs-quiz-btn--whatsapp" data-quiz-share-wa>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            Share on WhatsApp
+          </button>
+          <button class="cs-quiz-btn cs-quiz-btn--instagram" data-quiz-share-ig>&#x1F4F8; Share on Instagram</button>
+          <button class="cs-quiz-btn cs-quiz-btn--copy" data-quiz-share-copy>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+            Copy Link
+          </button>
+        </div>
+
+        <!-- Strength Bars -->
+        <div class="cs-quiz-strengths" data-result-strengths>
+          <h3><span data-child-name-display>Your child</span>'s strengths</h3>
+          <div data-result-strength-bars></div>
+        </div>
+
+        <!-- What this means -->
+        <div class="cs-quiz-result__meaning" data-result-meaning></div>
+
+        <!-- Product Recs -->
+        <div class="cs-quiz-result__products">
+          <h3>Great picks for <span data-child-name-display>them</span></h3>
+          <p class="cs-quiz-result__products-sub" data-result-products-sub></p>
+          <div class="cs-quiz-result__product-grid" data-result-products></div>
+        </div>
+
+        <!-- Exclusive Repeat Discount -->
+        <div class="cs-quiz-discount" data-result-discount>
+          <p class="cs-quiz-discount__label">Your discount code</p>
+          <p class="cs-quiz-discount__code" data-result-discount-code data-copy-discount></p>
+          <p class="cs-quiz-discount__copy-hint">Tap to copy</p>
+          <p class="cs-quiz-discount__value" data-result-discount-text></p>
+          <div class="cs-quiz-discount__timer">&#x23F0; Expires in <span data-result-countdown>23:59:59</span></div>
+        </div>
+
+        <!-- Retake -->
+        <div style="text-align:center;margin-bottom:20px;">
+          <button class="cs-quiz-btn cs-quiz-btn--retake" data-quiz-retake>&#x1F504; Retake Quiz</button>
+        </div>
+
+        <!-- Community CTA -->
+        <div class="cs-quiz-community">
+          <p>Join 53,600+ other parents</p>
+          <p class="sub">New toys, play ideas, and deals. Straight to WhatsApp</p>
+          <a href="#">Join the Group</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="cs-quiz-toast" data-quiz-toast></div>
+</section>
+
+<script>
+(function() {
+  'use strict';
+
+  /* ============ URL PARAMS ============ */
+  var params = new URLSearchParams(window.location.search);
+  var orderProduct = params.get('product') || '';
+  var customerName = params.get('customer_name') || '';
+  var orderId = params.get('order_id') || '';
+
+  /* ============ PRODUCT MAPPING ============ */
+  var PRODUCT_MAP = {
+    'spark-switch-v1':        { label: 'Spark Switch V1',          profiles: { explorer: 98, builder: 94 } },
+    'tinker-pad-v2':          { label: 'Tinker Pad V2',            profiles: { explorer: 98, builder: 94 } },
+    'mini-switch-v4':         { label: 'Mini Switch V4',           profiles: { explorer: 96, builder: 92 } },
+    'toggle-play-v6':         { label: 'Toggle Play V6',           profiles: { builder: 97, thinker: 88 } },
+    'jungle-piano-v10':       { label: 'Jungle Piano V10',          profiles: { storyteller: 95, explorer: 90 } },
+    'beat-maker-v9':          { label: 'Beat Maker V9',            profiles: { explorer: 97, builder: 92 } },
+    'jungle-piano-v10':       { label: 'Jungle Piano V10',         profiles: { storyteller: 95, explorer: 90 } },
+    'galaxy-explorer-v3':     { label: 'Galaxy Explorer V3',       profiles: { thinker: 99, explorer: 90 } },
+    'clapcuddles-ganesha':    { label: 'ClapCuddles Ganesha',      profiles: { storyteller: 96 } },
+    'clapcuddles-krishna':    { label: 'ClapCuddles Krishna',      profiles: { storyteller: 96 } },
+    'clapcuddles-hanuman':    { label: 'ClapCuddles Hanuman',      profiles: { storyteller: 96 } },
+    'sooperbrains-tank':      { label: 'SooperBrains Army Tank',   profiles: { thinker: 95, builder: 93 } }
+  };
+
+  /* ============ PROFILES ============ */
+  var PROFILES = {
+    explorer: {
+      name: 'The Little Explorer',
+      emoji: '\uD83D\uDD0D',
+      color: '#10B981',
+      colorLight: '#ECFDF5',
+      rarity: 18,
+      discountCode: 'EXPLORE10',
+      description: 'The kind of kid who opens every drawer, presses every button, and plays with the packaging more than the toy. They want to touch everything and see how it works. That\'s not naughty, that\'s just how they learn.',
+      badges: ['Curious', 'Sensory-Seeker', 'Adventurous'],
+      strengths: { Curiosity: 95, Creativity: 60, Energy: 70, Focus: 55, Imagination: 65 },
+      socialProof: '2,400+',
+      shareText: 'My kid got Little Explorer on this play type quiz \uD83D\uDD0D only 18% of kids get it apparently?? It\'s weirdly accurate lol\n\nTry it \uD83D\uDC47',
+      challengeText: 'Do this quiz and tell me what your kid gets! Mine got Little Explorer \uD83D\uDD0D\n\n\uD83D\uDC47',
+      igText: '\uD83D\uDD0D My kid is a Little Explorer!\n\nOnly 18% get this result\n\nTook this quick quiz from @clapstoreindia and it\'s spot on\n\nclapstore.in/quiz\n\n#ClapStore #ParentingLife #SharkTankIndia',
+      meaning: [
+        ['\uD83E\uDDE0', 'They learn by doing, not by watching. If they can touch it, press it, or open it, they\'re interested. That\'s actually a really good thing.'],
+        ['\uD83E\uDDF8', 'Toys with buttons, switches, latches, and different textures work best for them. The more a toy "does", the longer they\'ll play with it.'],
+        ['\uD83D\uDCA1', 'Try not to show them how things work right away. Let them figure it out. You\'ll be surprised how much they can do on their own.']
+      ],
+      products: [
+        { title: 'Spark Switch Busy Board V1', price: '\u20B9899', url: 'https://clapstoretoys.com/products/montessori-portable-switches-wooden-busy-board', img: 'https://clapstoretoys.com/cdn/shop/files/SparkSwitch_Toy_v1.jpg', match: 98, buyers: '1,200+' },
+        { title: 'Tinker Pad Busy Board V2', price: '\u20B9999', url: 'https://clapstoretoys.com/products/montessori-portable-switches-wooden-busy-board-game-pad', img: 'https://clapstoretoys.com/cdn/shop/files/TinkerPad_Toy_v1.jpg', match: 94, buyers: '890+' },
+        { title: 'Mini Switch Busy Board V4', price: '\u20B9599', url: 'https://clapstoretoys.com/products/toddler-montessori-portable-switches-busy-board-lite-version', img: 'https://clapstoretoys.com/cdn/shop/files/MiniSwitch_Toy_v1_da10d025-fa26-49cb-9418-9be72a7ac6e0.jpg', match: 91, buyers: '650+' },
+        { title: 'Jungle Piano Busy Board V10', price: '\u20B91,699', url: 'https://clapstoretoys.com/products/montessori-jungle-piano-5-in-1-musical-busy-board-for-toddlers', img: 'https://clapstoretoys.com/cdn/shop/files/WhatsApp_Image_2025-06-17_at_09.49.01.jpg', match: 88, buyers: '720+' }
+      ]
+    },
+    builder: {
+      name: 'The Builder',
+      emoji: '\uD83C\uDFD7\uFE0F',
+      color: '#F59E0B',
+      colorLight: '#FFFBEB',
+      rarity: 14,
+      discountCode: 'BUILD10',
+      description: 'Stacks cups, lines up shoes, builds towers out of literally anything. If it can be assembled or taken apart, they\'re on it. Switches, toggles, latches... they could spend hours on this stuff.',
+      badges: ['Problem-Solver', 'Spatial Thinker', 'Hands-On'],
+      strengths: { Curiosity: 60, Creativity: 75, Energy: 55, Focus: 85, Imagination: 70 },
+      socialProof: '1,800+',
+      shareText: 'Okay so apparently my kid is "The Builder" \uD83C\uDFD7\uFE0F, only 14% of kids get this. Ngl it\'s pretty accurate \uD83D\uDE02\n\nTry it \uD83D\uDC47',
+      challengeText: 'What does your kid get on this? Mine got Builder \uD83C\uDFD7\uFE0F and it\'s so them \uD83D\uDE02\n\n\uD83D\uDC47',
+      igText: '\uD83C\uDFD7\uFE0F My kid is The Builder!\n\nOnly 14% get this result\n\nQuick quiz from @clapstoreindia, surprisingly accurate\n\nclapstore.in/quiz\n\n#ClapStore #ParentingLife #SharkTankIndia',
+      meaning: [
+        ['\uD83E\uDDE0', 'That thing where they keep trying "one more block"? That\'s them learning how things fit together. It looks simple but it\'s actually how kids start thinking like engineers.'],
+        ['\uD83E\uDDF8', 'Anything they can toggle, flip, or build with is going to keep them busy the longest. They love figuring out how stuff works.'],
+        ['\uD83D\uDCA1', 'When they get stuck, try not to jump in too fast. That frustrated face means they\'re actually learning something new.']
+      ],
+      products: [
+        { title: 'Toggle Play Busy Board V6', price: '\u20B9999', url: 'https://clapstoretoys.com/products/toddler-montessori-portable-switches-wooden-busy-board-with-3-toggle-1-buzzer-module', img: 'https://clapstoretoys.com/cdn/shop/files/TogglePlay_Toy_v1.jpg', match: 97, buyers: '950+' },
+        { title: 'SooperBrains DIY Army Tank', price: '\u20B91,499', url: 'https://clapstoretoys.com/products/sooper-brains%E2%84%A2-diy-wooden-racer-car-kit-high-speed-stem-build-set-copy', img: 'https://clapstoretoys.com/cdn/shop/files/ChatGPTImageDec31_2025_04_34_47PM.png', match: 93, buyers: '720+' },
+        { title: 'Tinker Pad Busy Board V2', price: '\u20B9999', url: 'https://clapstoretoys.com/products/montessori-portable-switches-wooden-busy-board-game-pad', img: 'https://clapstoretoys.com/cdn/shop/files/TinkerPad_Toy_v1.jpg', match: 88, buyers: '890+' },
+        { title: 'Mini Switch Busy Board V4', price: '\u20B9599', url: 'https://clapstoretoys.com/products/toddler-montessori-portable-switches-busy-board-lite-version', img: 'https://clapstoretoys.com/cdn/shop/files/MiniSwitch_Toy_v1_da10d025-fa26-49cb-9418-9be72a7ac6e0.jpg', match: 85, buyers: '650+' }
+      ]
+    },
+    storyteller: {
+      name: 'The Storyteller',
+      emoji: '\uD83E\uDDDA',
+      color: '#8B5CF6',
+      colorLight: '#F5F3FF',
+      rarity: 22,
+      discountCode: 'STORY10',
+      description: 'Has full conversations with their soft toys. Gives names to everything. A cardboard box becomes a house, a blanket becomes a cape. They live in their own little world and honestly it\'s the cutest thing.',
+      badges: ['Imaginative', 'Creative', 'Expressive'],
+      strengths: { Curiosity: 65, Creativity: 90, Energy: 50, Focus: 60, Imagination: 98 },
+      socialProof: '2,100+',
+      shareText: 'Did this play type quiz and my kid is a Storyteller \uD83E\uDDDA, only 22% apparently! It described them perfectly haha\n\nTry it \uD83D\uDC47',
+      challengeText: 'Try this and see what your kid gets! Mine got Storyteller \uD83E\uDDDA and I was like yep that\'s them \uD83D\uDE02\n\n\uD83D\uDC47',
+      igText: '\uD83E\uDDDA My kid is The Storyteller!\n\nOnly 22% get this result\n\nThis quiz from @clapstoreindia is pretty spot on\n\nclapstore.in/quiz\n\n#ClapStore #ParentingLife #SharkTankIndia',
+      meaning: [
+        ['\uD83E\uDDE0', 'All that pretend play is actually really good for them. It helps them understand other people\'s feelings and gets them talking more. Win-win.'],
+        ['\uD83E\uDDF8', 'They do best with soft toys and things that can become "characters" in their stories. Give them a companion and they\'ll create a whole world around it.'],
+        ['\uD83D\uDCA1', 'Jump into their stories once in a while. Play the monster. Be the patient. Those are the moments they\'ll remember.']
+      ],
+      products: [
+        { title: 'ClapCuddles Chanting Hanuman', price: '\u20B9899', url: 'https://clapstoretoys.com/products/clapcuddles%E2%84%A2-mantra-chanting-hanuman-with-meditation-mode', img: 'https://clapstoretoys.com/cdn/shop/files/Clapcuddles_product_listing_6d45b26c-84c8-4a02-ba00-a33a0be3154a.jpg', match: 96, buyers: '1,400+' },
+        { title: 'ClapCuddles Chanting Ganesha', price: '\u20B9899', url: 'https://clapstoretoys.com/products/clap-cuddle%E2%84%A2-mantra-chanting-ganesha-with-meditation-mode', img: 'https://clapstoretoys.com/cdn/shop/files/1_9bbe266b-ace7-4f00-94b0-f267ebb95fe1.jpg', match: 93, buyers: '1,100+' },
+        { title: 'ClapCuddles Chanting Krishna', price: '\u20B9899', url: 'https://clapstoretoys.com/products/clap-cuddle%E2%84%A2-chanting-krishna-soft-toy', img: 'https://clapstoretoys.com/cdn/shop/files/2_13.jpg', match: 89, buyers: '780+' },
+        { title: 'Spark Switch Busy Board V1', price: '\u20B9899', url: 'https://clapstoretoys.com/products/montessori-portable-switches-wooden-busy-board', img: 'https://clapstoretoys.com/cdn/shop/files/SparkSwitch_Toy_v1.jpg', match: 84, buyers: '1,200+' }
+      ]
+    },
+    thinker: {
+      name: 'The Thinker',
+      emoji: '\uD83E\uDDE0',
+      color: '#3B82F6',
+      colorLight: '#EFF6FF',
+      rarity: 12,
+      discountCode: 'THINK10',
+      description: 'The one who goes quiet when they\'re figuring something out. Sorts things by colour, studies how a lock works, gets frustrated if the pattern is wrong. They notice details most adults miss.',
+      badges: ['Analytical', 'Focused', 'Pattern-Spotter'],
+      strengths: { Curiosity: 70, Creativity: 55, Energy: 45, Focus: 98, Imagination: 60 },
+      socialProof: '1,500+',
+      shareText: 'My kid is apparently "The Thinker" \uD83E\uDDE0, only 12% of kids get this! Makes total sense if you know them lol\n\nTry it \uD83D\uDC47',
+      challengeText: 'Mine got Thinker \uD83E\uDDE0, only 12% get it. What does yours get?\n\n\uD83D\uDC47',
+      igText: '\uD83E\uDDE0 My kid is The Thinker!\n\nOnly 12% get this result\n\nThis quiz from @clapstoreindia nailed it honestly\n\nclapstore.in/quiz\n\n#ClapStore #ParentingLife #SharkTankIndia',
+      meaning: [
+        ['\uD83E\uDDE0', 'That intense focus when they\'re trying to "get it right"? That\'s them thinking hard. These kids are naturally good at spotting patterns and solving problems.'],
+        ['\uD83E\uDDF8', 'Puzzles, sorting toys, and anything with cause-and-effect keeps them hooked. They want toys that make them think.'],
+        ['\uD83D\uDCA1', 'Keep things a little challenging for them. If it\'s too easy, they\'ll lose interest in 30 seconds. A small step up in difficulty goes a long way.']
+      ],
+      products: [
+        { title: 'Galaxy Explorer Busy Board V3', price: '\u20B91,699', url: 'https://clapstoretoys.com/products/montessori-solar-system-wooden-busy-board-rechargeable', img: 'https://clapstoretoys.com/cdn/shop/files/GE_Cover_Image_2.jpg', match: 99, buyers: '680+' },
+        { title: 'Jungle Piano Busy Board V10', price: '\u20B91,699', url: 'https://clapstoretoys.com/products/montessori-jungle-piano-5-in-1-musical-busy-board-for-toddlers', img: 'https://clapstoretoys.com/cdn/shop/files/WhatsApp_Image_2025-06-17_at_09.49.01.jpg', match: 95, buyers: '720+' },
+        { title: 'Beat Maker Busy Board V9', price: '\u20B91,899', url: 'https://clapstoretoys.com/products/montessori-beat-maker', img: 'https://clapstoretoys.com/cdn/shop/files/BM_Cover_Image_3.jpg', match: 87, buyers: '650+' },
+        { title: 'Toggle Play Busy Board V6', price: '\u20B9999', url: 'https://clapstoretoys.com/products/toddler-montessori-portable-switches-wooden-busy-board-with-3-toggle-1-buzzer-module', img: 'https://clapstoretoys.com/cdn/shop/files/TogglePlay_Toy_v1.jpg', match: 83, buyers: '950+' }
+      ]
+    },
+    mover: {
+      name: 'The Mover',
+      emoji: '\u26A1',
+      color: '#EF4444',
+      colorLight: '#FEF2F2',
+      rarity: 24,
+      discountCode: 'MOVE10',
+      description: 'Can\'t sit still for 10 seconds. Jumps on the sofa, runs around the house, climbs things you didn\'t think were climbable. It\'s not that they don\'t listen. They just need to move. That\'s how they\'re wired.',
+      badges: ['Energetic', 'Kinesthetic', 'Active Learner'],
+      strengths: { Curiosity: 60, Creativity: 50, Energy: 98, Focus: 40, Imagination: 55 },
+      socialProof: '2,800+',
+      shareText: 'Got "The Mover" for my kid \u26A1 and honestly who\'s even surprised at this point \uD83D\uDE02 24% of kids get it\n\nTry this \uD83D\uDC47',
+      challengeText: 'My kid got Mover \u26A1 which is so obvious lol. What does yours get?\n\n\uD83D\uDC47',
+      igText: '\u26A1 My kid is The Mover!\n\nOnly 24% match this energy\n\nQuiz from @clapstoreindia, can\'t argue with the result \uD83D\uDE02\n\nclapstore.in/quiz\n\n#ClapStore #ParentingLife #SharkTankIndia',
+      meaning: [
+        ['\uD83E\uDDE0', 'They\'re not being restless on purpose. Moving around is genuinely how they take in the world. It\'s a good thing even if it doesn\'t always feel like it.'],
+        ['\uD83E\uDDF8', 'Toys that they can push, pull, flip, and slam work best. They need something that can match their energy without breaking in 5 minutes.'],
+        ['\uD83D\uDCA1', 'Here\'s a trick that works: let them run around for 10 minutes before you need them to sit still. Burns off the energy and they\'ll actually focus.']
+      ],
+      products: [
+        { title: 'Beat Maker Busy Board V9', price: '\u20B91,899', url: 'https://clapstoretoys.com/products/montessori-beat-maker', img: 'https://clapstoretoys.com/cdn/shop/files/BM_Cover_Image_3.jpg', match: 97, buyers: '1,600+' },
+        { title: 'Jungle Piano Busy Board V10', price: '\u20B91,699', url: 'https://clapstoretoys.com/products/montessori-jungle-piano-5-in-1-musical-busy-board-for-toddlers', img: 'https://clapstoretoys.com/cdn/shop/files/WhatsApp_Image_2025-06-17_at_09.49.01.jpg', match: 92, buyers: '980+' },
+        { title: 'Spark Switch Busy Board V1', price: '\u20B9899', url: 'https://clapstoretoys.com/products/montessori-portable-switches-wooden-busy-board', img: 'https://clapstoretoys.com/cdn/shop/files/SparkSwitch_Toy_v1.jpg', match: 88, buyers: '1,200+' },
+        { title: 'Mini Switch Busy Board V4', price: '\u20B9599', url: 'https://clapstoretoys.com/products/toddler-montessori-portable-switches-busy-board-lite-version', img: 'https://clapstoretoys.com/cdn/shop/files/MiniSwitch_Toy_v1_da10d025-fa26-49cb-9418-9be72a7ac6e0.jpg', match: 84, buyers: '650+' }
+      ]
+    }
+  };
+
+  /* ============ SCORING (no screentime) ============ */
+  var SCORING = {
+    interests: {
+      music:    { explorer: 2, storyteller: 1 },
+      building: { builder: 2, thinker: 1 },
+      animals:  { explorer: 2, storyteller: 1 },
+      colors:   { storyteller: 2, explorer: 1 },
+      running:  { mover: 2, explorer: 1 },
+      puzzles:  { thinker: 2, builder: 1 }
+    },
+    scenario: {
+      spaceship: { storyteller: 3, explorer: 1 },
+      apart:     { explorer: 3, thinker: 1 },
+      draw:      { storyteller: 2, thinker: 1, builder: 1 },
+      jump:      { mover: 3, explorer: 1 }
+    },
+    superpower: {
+      xray:       { explorer: 3, thinker: 1 },
+      strength:   { builder: 3, mover: 1 },
+      shapeshift: { storyteller: 3, explorer: 1 },
+      freeze:     { thinker: 3, builder: 1 },
+      speed:      { mover: 3, explorer: 1 }
+    }
+  };
+
+  var LOADING_TEXTS = [
+    'Checking your answers...',
+    'Okay this is interesting...',
+    'One sec...',
+    'Got it!'
+  ];
+  var LOADING_ICONS = ['\uD83E\uDDE9', '\uD83D\uDC40', '\uD83E\uDD14', '\u2728'];
+
+  var TOAST_MESSAGES = {
+    1: ['Nice! Let\'s see what {name} is like \uD83D\uDE04', 'Got it! Moving on...'],
+    2: ['Good picks \uD83D\uDC4D', 'Noted!'],
+    3: ['Haha most parents say something different \uD83D\uDE04', 'Interesting choice!'],
+    4: ['Okay last one done!', 'Great, working on it...']
+  };
+
+  /* ============ STATE ============ */
+  var state = {
+    currentStep: 0,
+    answers: {},
+    multiSelected: [],
+    scores: { explorer:0, builder:0, storyteller:0, thinker:0, mover:0 },
+    childName: '',
+    resultProfile: null
+  };
+  var countdownInterval = null;
+
+  /* ============ DOM REFS ============ */
+  var root = document.getElementById('cs-play-quiz');
+  if (!root) return;
+  var progress = root.querySelector('[data-quiz-progress]');
+  var loadingText = root.querySelector('[data-quiz-loading-text]');
+  var loadingIcon = root.querySelector('[data-quiz-loading-icon]');
+  var loadingBar = root.querySelector('[data-quiz-loading-bar]');
+  var nextBtn = root.querySelector('[data-quiz-next]');
+  var counter = root.querySelector('[data-quiz-counter]');
+  var toastEl = root.querySelector('[data-quiz-toast]');
+  var childNameInput = root.querySelector('[data-child-name-input]');
+
+  /* ============ ORDER HOOK PERSONALIZATION ============ */
+  if (orderProduct && PRODUCT_MAP[orderProduct]) {
+    var prodInfo = PRODUCT_MAP[orderProduct];
+    var hookTitle = root.querySelector('[data-hook-title]');
+    hookTitle.innerHTML = 'While we pack your <span>' + prodInfo.label + '</span>... find out your child\'s <span>Play Type</span>';
+  }
+  if (customerName) {
+    var badgeText = root.querySelector('[data-order-badge-text]');
+    badgeText.textContent = 'Order Confirmed, ' + customerName + '!';
+  }
+
+  /* ============ CHILD NAME PERSONALIZATION ============ */
+  function updateChildNameDisplays() {
+    var name = state.childName;
+    var displays = root.querySelectorAll('[data-child-name-display]');
+    for (var i = 0; i < displays.length; i++) {
+      displays[i].textContent = name || 'your child';
+    }
+  }
+
+  /* ============ TOAST ============ */
+  /* ============ CLIPBOARD HELPER ============ */
+  function copyToClipboard(text) {
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).catch(function() { fallbackCopy(text); });
+      } else {
+        fallbackCopy(text);
+      }
+    } catch(err) { fallbackCopy(text); }
+  }
+  function fallbackCopy(text) {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.left = '-9999px';
+    document.body.appendChild(ta);
+    ta.select();
+    ta.setSelectionRange(0, 99999);
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+  }
+
+  function showToast(msg) {
+    toastEl.textContent = msg;
+    toastEl.classList.add('cs-quiz-toast--show');
+    setTimeout(function() { toastEl.classList.remove('cs-quiz-toast--show'); }, 2200);
+  }
+  function triggerToast(stepNum) {
+    var msgs = TOAST_MESSAGES[stepNum];
+    if (!msgs) return;
+    var msg = msgs[Math.floor(Math.random() * msgs.length)];
+    msg = msg.replace('{name}', state.childName || 'your little one');
+    setTimeout(function() { showToast(msg); }, 250);
+  }
+
+  /* ============ NAVIGATION ============ */
+  function goToStep(n) {
+    var cur = root.querySelector('.cs-quiz-step--active');
+    if (cur) cur.classList.remove('cs-quiz-step--active');
+    var target = root.querySelector('[data-step="' + n + '"]');
+    if (target) { void target.offsetWidth; target.classList.add('cs-quiz-step--active'); }
+    state.currentStep = n;
+
+    var showProgress = n >= 1 && n <= 4;
+    progress.classList.toggle('cs-quiz-hidden', !showProgress);
+    if (showProgress) {
+      for (var d = 1; d <= 4; d++) {
+        var dot = root.querySelector('[data-dot="' + d + '"]');
+        dot.classList.remove('done', 'active');
+        if (d < n) dot.classList.add('done');
+        else if (d === n) dot.classList.add('active');
+        dot.textContent = d < n ? '\u2713' : d;
+      }
+      for (var l = 1; l <= 3; l++) {
+        var line = root.querySelector('[data-line="' + l + '"]');
+        line.classList.toggle('done', l < n);
+      }
+    }
+    root.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  /* ============ SINGLE SELECT ============ */
+  function handleSingleSelect(grid, card) {
+    var question = grid.getAttribute('data-question');
+    var value = card.getAttribute('data-value');
+    var cards = grid.querySelectorAll('.cs-quiz-card');
+    for (var i = 0; i < cards.length; i++) {
+      cards[i].classList.remove('cs-quiz-card--selected');
+      cards[i].setAttribute('aria-checked', 'false');
+      cards[i].setAttribute('tabindex', '-1');
+    }
+    card.classList.add('cs-quiz-card--selected');
+    card.setAttribute('aria-checked', 'true');
+    card.setAttribute('tabindex', '0');
+    state.answers[question] = value;
+
+    /* If step 1 (age), validate child name then capture */
+    if (state.currentStep === 1) {
+      var nameVal = childNameInput.value.trim();
+      var nameErr = root.querySelector('[data-name-error]');
+      if (!nameVal) {
+        nameErr.style.display = 'block';
+        childNameInput.style.borderColor = '#EF4444';
+        childNameInput.focus();
+        card.classList.remove('cs-quiz-card--selected');
+        card.setAttribute('aria-checked', 'false');
+        return;
+      }
+      nameErr.style.display = 'none';
+      childNameInput.style.borderColor = '';
+      state.childName = nameVal;
+      updateChildNameDisplays();
+    }
+
+    triggerToast(state.currentStep);
+
+    setTimeout(function() {
+      var nextStep = state.currentStep + 1;
+      if (nextStep === 5) showLoading();
+      else goToStep(nextStep);
+    }, 400);
+  }
+
+  /* ============ MULTI SELECT ============ */
+  function handleMultiSelect(grid, card) {
+    var maxPicks = parseInt(grid.getAttribute('data-max'), 10) || 2;
+    var value = card.getAttribute('data-value');
+    if (card.classList.contains('cs-quiz-card--selected')) {
+      card.classList.remove('cs-quiz-card--selected');
+      card.setAttribute('aria-checked', 'false');
+      state.multiSelected = state.multiSelected.filter(function(v) { return v !== value; });
+    } else {
+      if (state.multiSelected.length >= maxPicks) return;
+      card.classList.add('cs-quiz-card--selected');
+      card.setAttribute('aria-checked', 'true');
+      state.multiSelected.push(value);
+    }
+    var cards = grid.querySelectorAll('.cs-quiz-card');
+    for (var i = 0; i < cards.length; i++) {
+      if (!cards[i].classList.contains('cs-quiz-card--selected')) {
+        cards[i].classList.toggle('cs-quiz-card--disabled', state.multiSelected.length >= maxPicks);
+      }
+    }
+    state.answers[grid.getAttribute('data-question')] = state.multiSelected.slice();
+    if (nextBtn) nextBtn.disabled = state.multiSelected.length === 0;
+    if (state.multiSelected.length === 0) counter.innerHTML = 'Pick your top 2';
+    else if (state.multiSelected.length === 1) counter.innerHTML = '<strong>1</strong> of 2 selected, pick one more!';
+    else {
+      counter.innerHTML = '<strong>2</strong> of 2 selected \u2713';
+      /* Auto-advance after 2 picks */
+      triggerToast(state.currentStep);
+      setTimeout(function() {
+        var nextStep = state.currentStep + 1;
+        if (nextStep === 5) showLoading();
+        else goToStep(nextStep);
+      }, 500);
+    }
+  }
+
+  /* ============ LOADING ============ */
+  function showLoading() {
+    goToStep(5);
+    var idx = 0;
+    loadingText.textContent = LOADING_TEXTS[0];
+    loadingIcon.textContent = LOADING_ICONS[0];
+    loadingBar.style.width = '0%';
+    var name = state.childName || 'your child';
+    loadingText.textContent = 'Looking at ' + name + '\'s answers...';
+    var interval = setInterval(function() {
+      idx++;
+      if (idx < LOADING_TEXTS.length) {
+        loadingText.textContent = LOADING_TEXTS[idx];
+        loadingIcon.textContent = LOADING_ICONS[idx];
+        loadingBar.style.width = (idx / (LOADING_TEXTS.length - 1) * 100) + '%';
+      }
+    }, 350);
+    setTimeout(function() {
+      clearInterval(interval);
+      loadingBar.style.width = '100%';
+      calculateScores();
+      var profileKey = getTopProfile();
+      showResults(profileKey);
+    }, 1500);
+  }
+
+  /* ============ SCORING ============ */
+  function calculateScores() {
+    var scores = { explorer:0, builder:0, storyteller:0, thinker:0, mover:0 };
+    var interests = state.answers.interests || [];
+    for (var i = 0; i < interests.length; i++) {
+      var map = SCORING.interests[interests[i]];
+      if (map) { for (var k in map) scores[k] += map[k]; }
+    }
+    var singles = ['scenario', 'superpower'];
+    for (var s = 0; s < singles.length; s++) {
+      var val = state.answers[singles[s]];
+      if (val && SCORING[singles[s]] && SCORING[singles[s]][val]) {
+        var smap = SCORING[singles[s]][val];
+        for (var sk in smap) scores[sk] += smap[sk];
+      }
+    }
+    state.scores = scores;
+    return scores;
+  }
+
+  function getTopProfile() {
+    var scores = state.scores, top = 'explorer', max = 0;
+    for (var k in scores) { if (scores[k] > max) { max = scores[k]; top = k; } }
+    return top;
+  }
+
+  /* ============ RENDER RESULTS ============ */
+  function showResults(profileKey) {
+    var p = PROFILES[profileKey];
+    var childName = state.childName;
+    state.resultProfile = profileKey;
+
+    /* Order Validation Card */
+    if (orderProduct && PRODUCT_MAP[orderProduct]) {
+      var pm = PRODUCT_MAP[orderProduct];
+      var matchPct = pm.profiles[profileKey] || Math.floor(Math.random() * 15 + 80);
+      var orderMatchEl = root.querySelector('[data-order-match]');
+      orderMatchEl.classList.remove('cs-quiz-hidden');
+      root.querySelector('[data-order-match-text]').textContent =
+        'Nice! Your ' + pm.label + ' is a ' + matchPct + '% match.';
+    }
+
+    /* Profile Card */
+    root.querySelector('[data-result-child-name]').textContent =
+      childName ? childName + '\u2019s play type' : 'Your child\u2019s play type';
+    root.querySelector('[data-result-emoji]').textContent = p.emoji;
+    root.querySelector('[data-result-title]').textContent = p.name;
+    /* Bold the first sentence of description for readability */
+    var descText = p.description;
+    var firstDot = descText.indexOf('.');
+    if (firstDot > 0 && firstDot < 80) {
+      root.querySelector('[data-result-desc]').innerHTML = '<strong>' + descText.substring(0, firstDot + 1) + '</strong> ' + descText.substring(firstDot + 1).trim();
+    } else {
+      root.querySelector('[data-result-desc]').textContent = descText;
+    }
+
+    var accentBar = root.querySelector('[data-result-accent]');
+    accentBar.style.background = p.color;
+
+    /* Badges */
+    var badgesEl = root.querySelector('[data-result-badges]');
+    badgesEl.innerHTML = '';
+    for (var i = 0; i < p.badges.length; i++) {
+      var badge = document.createElement('span');
+      badge.className = 'cs-quiz-result__badge';
+      badge.textContent = p.badges[i];
+      badge.style.background = p.colorLight;
+      badge.style.color = p.color;
+      badgesEl.appendChild(badge);
+    }
+
+    /* Rarity */
+    root.querySelector('[data-result-rarity-pct]').textContent = p.rarity + '%';
+
+    /* Strength Bars */
+    var barsEl = root.querySelector('[data-result-strength-bars]');
+    barsEl.innerHTML = '';
+    for (var trait in p.strengths) {
+      var pct = p.strengths[trait];
+      var row = document.createElement('div');
+      row.className = 'cs-quiz-strength-row';
+      row.innerHTML = '<span class="cs-quiz-strength-label">' + trait + '</span>' +
+        '<div class="cs-quiz-strength-track"><div class="cs-quiz-strength-fill" style="background:' + p.color + ';"></div></div>' +
+        '<span class="cs-quiz-strength-pct" style="color:' + p.color + '">' + pct + '%</span>';
+      barsEl.appendChild(row);
+    }
+    setTimeout(function() {
+      var fills = barsEl.querySelectorAll('.cs-quiz-strength-fill');
+      var idx = 0;
+      for (var t in p.strengths) { fills[idx].style.width = p.strengths[t] + '%'; idx++; }
+    }, 300);
+
+    /* Meaning */
+    var meaningEl = root.querySelector('[data-result-meaning]');
+    meaningEl.innerHTML = '<h3>Good to know</h3><ul>';
+    for (var m = 0; m < p.meaning.length; m++) {
+      meaningEl.innerHTML += '<li><span>' + p.meaning[m][0] + '</span>' + p.meaning[m][1] + '</li>';
+    }
+    meaningEl.innerHTML += '</ul>';
+
+    /* Products sub */
+    root.querySelector('[data-result-products-sub]').textContent =
+      childName ? 'Picked for ' + childName + '. Other parents love these'
+                : 'Picked for them. Other parents love these';
+
+    /* Products */
+    var productsEl = root.querySelector('[data-result-products]');
+    productsEl.innerHTML = '';
+    var maxProducts = 2;
+    for (var j = 0; j < Math.min(p.products.length, maxProducts); j++) {
+      var prod = p.products[j];
+      var a = document.createElement('a');
+      a.href = prod.url;
+      a.className = 'cs-quiz-product-card';
+      a.innerHTML = '<img src="' + prod.img + '" alt="' + prod.title + '" loading="lazy" width="300" height="300">' +
+        '<div class="cs-quiz-product-card__body">' +
+        '<p class="cs-quiz-product-card__title">' + prod.title + '</p>' +
+        '<span class="cs-quiz-product-card__price">' + prod.price + '</span>' +
+        '<div class="cs-quiz-product-match">\u2705 ' + prod.match + '% match</div>' +
+        '<div class="cs-quiz-product-social">Loved by ' + prod.buyers + ' parents</div>' +
+        '</div>' +
+        '<span class="cs-quiz-product-card__cta">Add to Order \u2192</span>';
+      productsEl.appendChild(a);
+    }
+
+    /* Discount (10% for post-purchase) */
+    root.querySelector('[data-result-discount-code]').textContent = p.discountCode;
+    root.querySelector('[data-result-discount-text]').textContent =
+      'Use this for 10% off your next order';
+    if (countdownInterval) clearInterval(countdownInterval);
+    var endTime = Date.now() + 24 * 60 * 60 * 1000;
+    var countdownEl = root.querySelector('[data-result-countdown]');
+    function tick() {
+      var diff = Math.max(0, endTime - Date.now());
+      var h = Math.floor(diff / 3600000);
+      var mn = Math.floor((diff % 3600000) / 60000);
+      var sc = Math.floor((diff % 60000) / 1000);
+      countdownEl.textContent = (h<10?'0':'') + h + ':' + (mn<10?'0':'') + mn + ':' + (sc<10?'0':'') + sc;
+    }
+    tick();
+    countdownInterval = setInterval(tick, 1000);
+
+    /* Share Card */
+    root.querySelector('[data-share-card-emoji]').textContent = p.emoji;
+    root.querySelector('[data-share-card-name]').textContent = childName ? childName + '\u2019s play type' : 'Your child\u2019s play type';
+    root.querySelector('[data-share-card-title]').textContent = p.name;
+    root.querySelector('[data-share-card-rarity]').textContent = '\uD83C\uDFC6 ' + p.rarity + '% of kids match this type';
+    var shareBadgesEl = root.querySelector('[data-share-card-badges]');
+    shareBadgesEl.innerHTML = '';
+    for (var b = 0; b < p.badges.length; b++) {
+      var sb = document.createElement('span');
+      sb.className = 'cs-quiz-share-card__badge';
+      sb.textContent = '\u2B50 ' + p.badges[b];
+      shareBadgesEl.appendChild(sb);
+    }
+    root.querySelector('[data-result-share-card]').style.background = '#fff';
+
+    goToStep(6);
+    launchConfetti();
+
+    /* Log to console */
+    /* Send data to Google Sheet */
+    var sheetData = {
+      order_id: orderId,
+      customer_name: customerName,
+      child_name: childName,
+      age: state.answers.age || '',
+      interests: state.answers.interests || [],
+      scenario: state.answers.scenario || '',
+      superpower: state.answers.superpower || '',
+      profile: p.name,
+      product_ordered: orderProduct,
+      discount_code: p.discountCode
+    };
+    try {
+      fetch('https://script.google.com/macros/s/AKfycbyXgNOPlS0DyZ-wD0VBGqZJBLUpKpg4XJ2ZrU2NqdChyK5RkCX6NOGmQ-cH1BNiPJlrPg/exec', {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(sheetData)
+      });
+    } catch(err) { /* silent fail */ }
+  }
+
+  /* ============ CONFETTI ============ */
+  function launchConfetti() {
+    var container = root.querySelector('[data-quiz-confetti]');
+    container.innerHTML = '';
+    var colors = ['#FCBB13','#108474','#10B981','#F59E0B','#3B82F6','#EF4444','#EC4899'];
+    for (var i = 0; i < 60; i++) {
+      var c = document.createElement('i');
+      c.style.left = Math.random() * 100 + '%';
+      c.style.background = colors[Math.floor(Math.random() * colors.length)];
+      c.style.animationDelay = (Math.random() * 1.5) + 's';
+      c.style.animationDuration = (2 + Math.random() * 2) + 's';
+      c.style.width = (6 + Math.random() * 8) + 'px';
+      c.style.height = (6 + Math.random() * 8) + 'px';
+      c.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+      container.appendChild(c);
+    }
+    setTimeout(function() { container.innerHTML = ''; }, 4000);
+  }
+
+  /* ============ RETAKE ============ */
+  function retake() {
+    state.currentStep = 0;
+    state.answers = {};
+    state.multiSelected = [];
+    state.scores = { explorer:0, builder:0, storyteller:0, thinker:0, mover:0 };
+    state.childName = '';
+    state.resultProfile = null;
+    childNameInput.value = '';
+    if (nextBtn) nextBtn.disabled = true;
+    counter.innerHTML = 'Pick your top 2';
+    var allCards = root.querySelectorAll('.cs-quiz-card');
+    for (var i = 0; i < allCards.length; i++) {
+      allCards[i].classList.remove('cs-quiz-card--selected', 'cs-quiz-card--disabled');
+      allCards[i].setAttribute('aria-checked', 'false');
+    }
+    root.querySelector('[data-order-match]').classList.add('cs-quiz-hidden');
+    updateChildNameDisplays();
+    goToStep(0);
+  }
+
+  /* ============ EVENT LISTENERS ============ */
+  root.addEventListener('click', function(e) {
+    var startBtn = e.target.closest('[data-quiz-start]');
+    if (startBtn) { goToStep(1); return; }
+
+    var card = e.target.closest('.cs-quiz-card');
+    if (card) {
+      var grid = card.closest('[data-select]');
+      if (!grid) return;
+      if (grid.getAttribute('data-select') === 'single') handleSingleSelect(grid, card);
+      else handleMultiSelect(grid, card);
+      return;
+    }
+
+    var nxt = e.target.closest('[data-quiz-next]');
+    if (nxt && !nxt.disabled) {
+      triggerToast(state.currentStep);
+      var nextStep = state.currentStep + 1;
+      if (nextStep === 5) showLoading();
+      else goToStep(nextStep);
+      return;
+    }
+
+    var retakeBtn = e.target.closest('[data-quiz-retake]');
+    if (retakeBtn) { retake(); return; }
+
+    /* Share: WhatsApp */
+    var waBtn = e.target.closest('[data-quiz-share-wa]');
+    if (waBtn && state.resultProfile) {
+      var pWa = PROFILES[state.resultProfile];
+      var waUrl = 'https://api.whatsapp.com/send?text=' + encodeURIComponent(pWa.shareText + '\n\nclapstore.in/quiz');
+      window.location.href = waUrl;
+      return;
+    }
+
+    /* Share: Instagram */
+    var igBtn = e.target.closest('[data-quiz-share-ig]');
+    if (igBtn && state.resultProfile) {
+      var pIg = PROFILES[state.resultProfile];
+      if (navigator.share) {
+        navigator.share({ title: pIg.name + ' Play Type', text: pIg.igText }).catch(function() {
+          copyToClipboard(pIg.igText);
+          showToast('Copied! Paste in your Instagram caption \uD83D\uDCF8');
+        });
+      } else {
+        copyToClipboard(pIg.igText);
+        showToast('Copied! Paste in your Instagram caption \uD83D\uDCF8');
+      }
+      return;
+    }
+
+    /* Share: Copy link */
+    var copyBtn = e.target.closest('[data-quiz-share-copy]');
+    if (copyBtn) {
+      copyToClipboard('clapstore.in/quiz');
+      showToast('Link copied! \uD83D\uDD17');
+      return;
+    }
+
+    /* Copy discount code */
+    var discountBtn = e.target.closest('[data-copy-discount]');
+    if (discountBtn) {
+      var code = discountBtn.textContent.trim();
+      copyToClipboard(code);
+      showToast('Copied! Use ' + code + ' at checkout');
+      return;
+    }
+
+  });
+
+})();
+</script>
+</body>
+</html>
