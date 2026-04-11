@@ -1,5 +1,6 @@
 (function() {
   'use strict';
+  try {
 
   var QUIZ_BASE_URL = 'https://veddaang.github.io/clapstore-quiz/';
   var BANNER_DELAY_MS = 1500;
@@ -82,4 +83,5 @@
     }
   }, BANNER_DELAY_MS);
 
+  } catch(e) { /* silent fail — never break the page */ }
 })();
