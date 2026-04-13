@@ -2006,7 +2006,7 @@
       fetch('https://script.google.com/macros/s/AKfycbyXgNOPlS0DyZ-wD0VBGqZJBLUpKpg4XJ2ZrU2NqdChyK5RkCX6NOGmQ-cH1BNiPJlrPg/exec', {
         method: 'POST',
         mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'text/plain' },
         body: JSON.stringify(sheetData)
       });
     } catch(err) { /* silent fail */ }
