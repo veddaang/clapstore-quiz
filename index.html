@@ -1933,12 +1933,15 @@
       childName ? 'Picked for ' + childName + '. Other parents love these'
                 : 'Picked for them. Other parents love these';
 
-    /* Products */
+    /* Products — filter out the product they already ordered */
     var productsEl = root.querySelector('[data-result-products]');
     productsEl.innerHTML = '';
     var maxProducts = 2;
-    for (var j = 0; j < Math.min(p.products.length, maxProducts); j++) {
+    var shown = 0;
+    for (var j = 0; j < p.products.length && shown < maxProducts; j++) {
       var prod = p.products[j];
+      if (orderProduct && prod.url.indexOf(orderProduct) !== -1) continue;
+      shown++;
       var a = document.createElement('a');
       a.href = prod.url;
       a.className = 'cs-quiz-product-card';
@@ -2003,7 +2006,7 @@
       discount_code: p.discountCode
     };
     try {
-      fetch('https://script.google.com/macros/s/AKfycbyXgNOPlS0DyZ-wD0VBGqZJBLUpKpg4XJ2ZrU2NqdChyK5RkCX6NOGmQ-cH1BNiPJlrPg/exec', {
+      fetch('https://script.google.com/macros/s/AKfycbx-4jqjSY8puQPtX-_lycjxtoXlePjbJ8eXGKeKiJdAyaxR7FsRp2MmvwHycw4D1IubSA/exec', {
         method: 'POST',
         mode: 'no-cors',
         headers: { 'Content-Type': 'text/plain' },
